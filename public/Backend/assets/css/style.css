@@ -1,0 +1,297 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+:root{
+    --primary:#fd001d;
+    --secound:#faf6f6;
+    --bs-success:#2dff9d;
+    --bs-warning:#ffca2d;
+    --bs-info:#0DCAF0;
+}
+::after,
+::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.my-nav {
+    background-color: var(--primary) !important;
+width: 100% !important;
+height: 5.5rem !important;
+
+}
+
+header{
+    min-width: 31rem !important;
+}
+.my-nav a{
+    color: #faf6f6 !important;
+}
+.my-nav .dropdown-item{
+    color: black !important;
+}
+.my-drop{
+    position: absolute;
+    left: 80rem !important;
+    top: .2rem !important;
+}
+a {
+    text-decoration: none !important;
+}
+
+li {
+    list-style: none !important;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+body {
+    font-family: 'Poppins', sans-serif !important;
+    font-weight: bold !important;
+background-color: white !important;
+overflow-x: hidden;
+}
+
+.wrapper {
+    display: flex;
+}
+
+/* .main {
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    transition: all 0.35s ease-in-out;
+} */
+
+#sidebar {
+   min-height: 100vh;
+    width: 70px;
+    min-width: 60px;
+    z-index: 1000;
+    transition: all .25s ease-in-out;
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+#sidebar.expand {
+    width: 260px;
+    min-width: 260px;
+}
+
+.toggle-btn {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    padding: 1rem 1.5rem;
+}
+
+.toggle-btn i {
+    font-size: 1.5rem;
+    color:black !important;
+}
+
+.sidebar-logo {
+    margin: auto 0;
+}
+
+.sidebar_header{
+color: var(--primary);
+}
+
+#sidebar:not(.expand) .sidebar-logo,
+#sidebar:not(.expand) a.sidebar-link span {
+    display: none;
+}
+.prodcut_input input{
+  display: flex;
+  max-width: 17rem;
+  }
+.sidebar-nav {
+    padding: 2rem 0;
+    flex: 1 1 auto;
+}
+
+a.sidebar-link {
+  position: relative;
+    padding: 1rem 1.625rem;
+    color:black !important;
+    display: block;
+    font-size: 1rem;
+    font-weight: bold;
+    white-space: nowrap;
+    border-left: 3px solid transparent;
+    top: .3rem;
+}
+.my_btn{
+    background-color: var(--primary) !important;
+    width: 7rem !important;
+    color: white !important;
+    text-wrap:nowrap;
+}
+.sidebar-link i {
+    font-size: 1.1rem;
+    margin-right: .75rem;
+}
+
+a.sidebar-link:hover {
+    background-color: rgba(255, 255, 255, .075);
+    border-left: 3px solid var(--primary);
+}
+
+.sidebar-item {
+    position: relative;
+}
+
+#sidebar:not(.expand) .sidebar-item .sidebar-dropdown {
+    position: absolute;
+    top: 0;
+    left: 70px;
+    background-color:var(--secound);
+    padding: 0;
+    min-width: 15rem;
+    display: none;
+}
+
+#sidebar:not(.expand) .sidebar-item:hover .has-dropdown+.sidebar-dropdown {
+    display: block;
+    max-height: 15em;
+    width: 100%;
+    opacity: 1;
+}
+
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"]::after {
+    border: solid;
+    border-width: 0 .075rem .075rem 0;
+    content: "";
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.4rem;
+    transform: rotate(-135deg);
+    transition: all .2s ease-out;
+}
+
+#sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+    transform: rotate(45deg);
+    transition: all .2s ease-out;
+}
+.active{
+    background-color: rgb(255, 205, 205);
+    border-radius: .3rem;
+    height: 3rem !important;
+    max-width: 16.5rem;
+    align-items: center !important;
+    }
+    .active::before{
+    content: '';
+    height: 100%;
+    width: 0.9rem;
+    background-color: var(--primary) !important;
+
+    }
+    .sidebaar a:hover{
+    color: var(--primary) !important;
+    transform:scale(1.1);
+    transition: all 600ms ease;
+    }
+    .my-text{
+        font-size: .8rem !important;
+    }
+
+    /* *********************************************************** */
+    #div_2{
+      position: relative;
+
+  }
+  #div_2 .icon{
+
+  position: absolute;
+  cursor: pointer;
+  left: 19rem;
+  top: -2.3rem;
+  }
+  @media screen and (max-width:770px) {
+  #div_2 .icon{
+      position: absolute;
+      cursor: pointer;
+      left: 14rem;
+      top: -1.99rem;
+          }
+          .my-drop{
+            position: absolute;
+            left: 10rem !important;
+        }
+
+  }
+  @media screen and (min-width:320px)  {
+
+    .my-drop{
+        position: absolute;
+        left: 2rem !important;
+    }
+
+}
+  @media screen and (max-width:426px)  {
+
+            .my-drop{
+                position: absolute;
+                left: 12rem !important;
+            }
+
+        }
+        @media screen and (max-width:768px)  {
+
+            .categ-section{
+                width: 50rem !important;
+            }
+
+        }
+  @media screen and (min-width:426px) and (max-width:793px) {
+    #div_2 .icon{
+        position: absolute;
+        cursor: pointer;
+        left: 19rem;
+        top: -2.4rem;
+            }
+            .my-drop{
+                position: absolute;
+                left: 44rem !important;
+            }
+            header{
+                min-width: 56rem !important;
+            }
+    }
+    @media screen and (min-width:771px) and (max-width:1246px) {
+                .my-drop{
+                    position: absolute;
+                    left: 40rem !important;
+                }
+        }
+        @media screen and (min-width:1000px) {
+            .my-drop{
+                position: absolute;
+                left: 50rem !important;
+            }
+    }
+    @media screen and (min-width:1100px) {
+        .my-drop{
+            position: absolute;
+            left: 70rem !important;
+        }
+}
+        .shipped{
+            background-color: var(--bs-info) !important;
+        }
+        .pending{
+            background-color: var(--bs-warning) !important;
+        }
+        .delivered{
+            background-color: var(--bs-success) !important;
+        }
+        table thead th {
+            cursor: pointer;
+       }

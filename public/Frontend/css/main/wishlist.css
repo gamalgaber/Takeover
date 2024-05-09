@@ -1,0 +1,25 @@
+@import url(style.css);
+
+@media (max-width:676px) {
+    .flex__mobile {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+    }
+}
+
+@media (min-width:1200px) {
+    .allwishlist__size {
+        padding: 0 340px;
+    }
+    .wishlist__info--gap {
+        gap: 80px; /*       - */
+    }
+}
+
+@media (max-width:1199px) and (min-width:676px) {
+    .wishlist__info--gap {
+        gap: 50px; /*       - */
+    }
+}
+

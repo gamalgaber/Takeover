@@ -1,0 +1,95 @@
+@import url(style.css);
+.check-out__price {
+    background-color: #f5f5f5;
+    padding: 40px !important;
+    border-left: 3px red saddlebrown;
+}
+
+.cheak-out__text--size {
+    width: 100%;
+}
+
+@media (max-width:576px) {
+    .cheak-out__text--size {
+        width: 100%;
+    }
+}
+
+.cheak-out__image {
+    width: 77px;
+    padding: 0 10px;
+    border: 1px #ccc solid;
+    border-radius: 10px;
+}
+
+.cheak-out__button {
+    padding: 5px 20px;
+    text-transform: capitalize;
+    background-color: black;
+    color: white;
+    text-decoration: none;
+    transition: var(--transition-sm);
+    cursor: pointer;
+}
+
+.cheak-out__button:hover {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.cheak-out__span--price {
+    font-weight: 600;
+}
+
+.cheak-out__span--text {
+    text-transform: capitalize;
+    font-size: 15px;
+}
+
+.text-small {
+    font-size: var(--font-size);
+}
+
+.accordion-button:focus {
+    box-shadow: none !important;
+}
+
+.accordion-button:not(.collapsed) {
+    color: black !important;
+    background-color: white !important;
+}
+
+.form-control:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: var(--color-primary) !important;
+    outline: 0;
+    box-shadow: var(--color-primary) !important;
+}
+
+.cheakout__button--completeorder button {
+    padding: 15px 10px;
+    color: white !important;
+    background-color: black;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    display: inline-block;
+    width: 100%;
+    font-size: 20px;
+    transition: var(--transition-sm);
+}
+
+.cheakout__button--completeorder button:hover {
+    color: white;
+    background-color: var(--color-primary);
+}
+
+.checkout__login {
+    /* letter-spacing: 1px; */
+    color: var(--color-primary) !important;
+}
+
+.checkout__login:hover {
+    color: black !important;
+}

@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
+:root{
+ --primary:#fd001d;
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;    
+    font-family: 'Poppins', sans-serif;
+}
+body{
+    /* background-image: url(../images/4.jpg);
+    background-size: 100rem 100rem;
+    background-position: 0px -500px;
+    background-repeat: no-repeat; */
+    background-color: #c2bfbf !important;
+}
+.contaainer {
+    height: 60rem;
+    width: 100%;
+
+    display: grid;
+    place-items: center;
+    column-gap: 30px;
+    padding-bottom: 300px;
+    position: relative;
+}
+
+.form {
+    position: absolute;
+    background: #fff;
+    border-radius: 6px;
+    max-width: 430px;
+    width: 100%;
+    padding: 30px;
+    padding-top: 10px;
+    padding-bottom: 50px;
+    margin-top: 3rem;
+    
+}
+
+.form.signup {
+    height: 830px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.forms.show-signup .form.signup{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.forms.show-signup .form.login{
+    opacity: 0;
+    pointer-events: none;
+}
+
+header {
+    font-size: 28px;
+    font-weight: 600;
+    color: #232836;
+    text-align: center;
+}
+
+form {
+    margin-top: 30px;
+}
+
+.form .field {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 6px;
+}
+
+.field input,
+.field button {
+    height: 100%;
+    width: 100%;
+    border: none;
+    font-size: 16px;
+    font-weight: 400;
+    border-radius: 6px;
+}
+
+.field input {
+    outline: none;
+    padding: 0 15px;
+    border: 1px solid #cacaca;
+}
+
+.field input:focus {
+    border-bottom-width: 2px;
+}
+
+.eye-icon {
+    font-size: 18px;
+    color: #8b8b8b;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    padding: 5px;
+}
+
+.field button {
+    color: #fff;
+    background-color: var(--primary);
+    cursor: pointer;
+}
+
+.field button:hover {
+    background-color: var(--primary);
+}
+
+.form-link {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.form-link span,
+.form-link a {
+    font-size: 14px;
+    font-weight: 400; 
+    color: #232836;  
+}
+
+.form a {
+    text-decoration: none;
+    color: var(--primary);
+}
+.form-content a:hover {
+    text-decoration: underline;
+}
+
+.line {
+    position: relative;
+    height: 1px;
+    width: 100%;
+    background-color: #d4d4d4;
+    margin: 36px 0;
+}
+
+.line::before {
+    content: 'Or';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    color: #8b8b8b;
+    padding: 0 15px;
+}
+
+.media-options a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+a.facebook {
+    background-color: #4267b2;
+    color: #fff;
+}
+
+a.facebook .facebook-icon {
+    display: grid;
+    place-items: center;
+    height: 28px;
+    width: 28px;
+    color: #0171d3;
+    font-size: 20px;
+    border-radius: 50%;
+    background-color: #fff;
+
+}
+
+.facebook-icon, svg{
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+}
+
+.media-options .field.google svg {
+    height: 28px;
+    width: 28px;
+}
+
+a.google {
+    border: 1px solid #cacaca;
+}
+
+a.google span{
+    font-weight: 500;
+    opacity: 0.6;
+    color: #232836;
+}
+
+@media screen and (max-width: 376px ){
+    .form {
+        padding: 15px;
+    }
+    .container{
+        column-gap: 10px;
+    }
+    .form{
+     height: 650px;
+     padding-top: 50px;
+    }
+}
+@media screen and (min-width:376) {
+    .form {
+        padding-top: 500px;
+    }
+    .container{
+        column-gap: 10px;
+        height: auto;
+    }
+    .form{
+     height: 700px;
+   
+    }
+}
