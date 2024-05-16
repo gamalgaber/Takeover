@@ -6,17 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Mail\Contact;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 
 class ContactController extends Controller
 {
-    public function contact()
+    public function contact(): view
     {
         $categories = Category::where('status', 1)->get();
         return view('frontend.pages.contact', compact('categories'));
     }
 
-    public function handleContactForm(Request $request)
+    public function handleContactForm(Request $request): Response
     {
         $request->validate([
             'name'=> ['required','max:50'],

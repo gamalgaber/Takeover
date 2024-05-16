@@ -11,6 +11,7 @@
                 <thead>
                     <tr>
                         <th>Products Title</th>
+                        <th>Filter Categories Title</th>
                         <th>Categories Title</th>
                         <th>Action</th>
                     </tr>
@@ -20,6 +21,9 @@
                     <tr>
                         <td>
                             {{$item->products_title}}
+                        </td>
+                        <td>
+                            {{$item->filter_categories_title}}
                         </td>
                         <td>
                             {{$item->categories_title}}

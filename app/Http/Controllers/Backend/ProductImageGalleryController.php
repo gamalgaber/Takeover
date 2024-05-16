@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductImageGallery;
 use App\Traits\ImageUploadTrait;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ProductImageGalleryController extends Controller
 {
@@ -14,7 +16,7 @@ class ProductImageGalleryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): view
     {
         $productImages = ProductImageGallery::where('product_id', $request->product)->get();
         $product = Product::findOrFail($request->product);
@@ -32,10 +34,10 @@ class ProductImageGalleryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'image.*' => ['required', 'image', 'max:2048'] //.* because it will receive array of images
+            'image.*' => ['required', 'image', 'max:2500'] //.* because it will receive array of images
         ]);
 
         /** handle image uploads */
@@ -61,34 +63,8 @@ class ProductImageGalleryController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
         $productImage = ProductImageGallery::findOrFail($id);
         $this->deleteImage($productImage->image);

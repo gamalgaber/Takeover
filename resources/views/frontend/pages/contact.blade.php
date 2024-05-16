@@ -36,7 +36,6 @@
         </div>
     </section>
 @endsection
-
 @push('scripts')
     <script>
         $.ajaxSetup({
@@ -78,3 +77,4 @@
         })
     </script>
 @endpush
+

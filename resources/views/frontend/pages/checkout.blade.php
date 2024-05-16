@@ -17,38 +17,65 @@
                                     <span class="fw-bold fs-6  total_amount_res" ></span>
                                 </div>
                             </button>
-
-
-
                         </h2>
                         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
                                 <div class="cheak-out__text--size">
-                                    @if ($cartItems)
-                                        @foreach ($cartItems as $item)
-                                            <div class="">
-                                                <div class="d-flex  align-items-center ">
-                                                    <div class="cheak-out__image">
-                                                        <img src="{{ asset($item->options->image) }}" class="img-fluid "
-                                                            width="100%" height="100%" alt="">
+                                    @if (request()->has('product_id'))
+                                        <div class="">
+                                            <div class="d-flex  align-items-center ">
+                                                <div class="cheak-out__image">
+                                                    <img src="{{ asset($product->image) }}" class="img-fluid "
+                                                         width="100%" height="100%" alt="">
+                                                </div>
+                                                <div class="d-flex flex-column ms-3">
+                                                    <div>
+                                                        <span>{{ $product->name }}</span>
                                                     </div>
-                                                    <div class="d-flex flex-column ms-3">
-                                                        <div>
-                                                            <span>{{ $item->name }}</span>
-                                                        </div>
-                                                        <div>
-                                                            <span
-                                                                class="text-black-50  text-small">{{ $item->options->variants }}</span>
-                                                        </div>
+                                                    <div>
+                                                            <span class="text-black-50  text-small">Size: {{request()->variant_id}}</span>
                                                     </div>
-                                                    <div class="ms-auto ">
-                                                        <span class="cheak-out__span--price">{{ $item->price }} LE</span>
+                                                    <div>
+                                                            <span class="text-black-50  text-small">Quantity: 1</span>
                                                     </div>
                                                 </div>
+                                                <div class="ms-auto ">
+                                                    <span class="cheak-out__span--price">{{ $product->price }} LE</span>
+                                                </div>
                                             </div>
-                                        @endforeach
+                                        </div>
+                                    @else
+                                        @if ($cartItems)
+                                            @foreach ($cartItems as $item)
+                                                <div class="">
+                                                    <div class="d-flex  align-items-center ">
+                                                        <div class="cheak-out__image">
+                                                            <img src="{{ asset($item->options->image) }}" class="img-fluid "
+                                                                 width="100%" height="100%" alt="">
+                                                        </div>
+                                                        <div class="d-flex flex-column ms-3">
+                                                            <div>
+                                                                <span>{{ $item->name }}</span>
+                                                            </div>
+                                                            <div>
+                                                            <span
+                                                                class="text-black-50  text-small">Size: {{ $item->options->variants }}</span>
+                                                            </div>
+                                                            <div>
+                                                            <span
+                                                                class="text-black-50  text-small">Quantity: {{ $item->qty }}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ms-auto ">
+                                                            <span class="cheak-out__span--price">{{ $item->price * $item->qty }} LE</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        @endif
                                     @endif
+
 
 
                                     <form class="coupon_form">
@@ -67,7 +94,7 @@
                                     <div class="d-flex justify-content-between mb-1 ">
                                         <span class="cheak-out__span--text">Subtotal</span>
                                         <span class="cheak-out__span--price "
-                                            id="subTotal_amount_res">{{ getCartSubTotal() }}LE</span>
+                                            id="subTotal_amount_res">{{$subTotal > 0 ? $subTotal : getCartSubTotal() }}LE</span>
                                     </div>
                                     <div class="d-flex justify-content-between mb-1 ">
                                         <span class="cheak-out__span--text">Discount</span>
@@ -128,7 +155,7 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-4 col-12 mb-2 mb-sm-0">
+                                <div class="col-md-4 col-12 mb-3 mb-sm-0">
                                     <input type="text" class="form-control" placeholder="City" aria-label="First name"
                                         name="city" value="{{ old('city') }}">
                                 </div>
@@ -140,7 +167,6 @@
                                             <option {{ $govenment == old('govenment') ? 'selected' : '' }}
                                                 value="{{ $govenment }}">{{ $govenment }}</option>
                                         @endforeach
-
                                     </select>
                                 </div>
                                 <div class="col-md-4 col-12">
@@ -149,7 +175,7 @@
                                 </div>
                             </div>
 
-                            <div class="mb-3 mt-4">
+                            <div class="mb-3 mt-3">
                                 <input type="tel" class="form-control p-2" id="exampleInputEmail1"
                                     aria-describedby="emailHelp" placeholder=" phone " name="phone"
                                     value="{{ old('phone') }}">
@@ -169,6 +195,9 @@
                         </div>
                         <input type="hidden" name="shipping_price" id="shipping_price" value="">
                         <div class="cheakout__button--completeorder mt-4">
+                            <input type="hidden" name="checkout_type" value="{{ request()->segment(1) === 'checkout' && request()->segment(2) === 'buyNow' ? 'buyNow' : 'cart' }}">
+                            <input type="hidden" name="product_id" value="{{ request('product_id') }}">
+                            <input type="hidden" name="variant_id" value="{{ request('variant_id') }}">
                             <button type="submit">Complete Order</button>
                         </div>
                     </form>
@@ -189,7 +218,10 @@
                                             <span>{{ $product->name }}</span>
                                         </div>
                                         <div>
-                                            <span class="text-black-50  text-small"></span>
+                                            <span class="text-black-50  text-small">Size: {{request()->variant_id}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-black-50  text-small">Quantity: 1</span>
                                         </div>
                                     </div>
                                     <div class="ms-auto ">
@@ -211,11 +243,15 @@
                                             </div>
                                             <div>
                                                 <span
-                                                    class="text-black-50  text-small">{{ $item->options->variants }}</span>
+                                                    class="text-black-50  text-small">Size: {{ $item->options->variants }}</span>
+                                            </div>
+                                            <div>
+                                                <span
+                                                    class="text-black-50  text-small">Quantity: {{ $item->qty }}</span>
                                             </div>
                                         </div>
                                         <div class="ms-auto ">
-                                            <span class="cheak-out__span--price">{{ $item->price }}LE</span>
+                                            <span class="cheak-out__span--price">{{ $item->price * $item->qty }}LE</span>
                                         </div>
                                     </div>
                                 </div>
@@ -235,8 +271,7 @@
                         </form>
                         <div class="d-flex justify-content-between mb-1 ">
                             <span class="cheak-out__span--text">Subtotal</span>
-                            <span class="cheak-out__span--price " id="subTotal_amount">{{ getCartSubTotal() }}
-                                LE</span>
+                            <span class="cheak-out__span--price " id="subTotal_amount">{{$subTotal > 0 ? $subTotal : getCartSubTotal() }}LE</span>
                         </div>
                         <div class="d-flex justify-content-between mb-1 ">
                             <span class="cheak-out__span--text">Discount</span>
@@ -254,6 +289,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 @endsection
 

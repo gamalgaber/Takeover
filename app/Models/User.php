@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -44,21 +45,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function socialite(){
+    public function socialite(): HasMany
+    {
         return $this->hasMany(Socialite::class);
     }
-
-    // public static function generateUserName($username)
-    // {
-    //     if(!$username){
-    //         $username = Str::lower(Str::random(8));
-    //     }
-
-    //     if(User::where('username', $username)->exists()){
-    //         $newUsername = $username . Str::lower(Str::random(3));
-    //         $username = self::generateUserName($newUsername);
-    //     }
-
-    //     return $username;
-    // }
 }

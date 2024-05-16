@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="{{ asset('Backend/assets/icons/css/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('Backend/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{asset('Backend/vendors/dataTables/responsive.bootstrap5.min.css')}}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="{{asset('Backend/vendors/toastr-bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('Backend/vendors/toastr.min.css')}}">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
@@ -46,7 +46,7 @@
     <script src="{{asset('Backend/vendors/bootstrap.min.js')}}"></script>
     <script src="{{asset('Backend/vendors/bootstrap.bundle.min.js')}}"></script>
     <script src="{{ asset('Backend/assets/js/script.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="{{asset('Backend/vendors/toastr.min.js')}}"></script>
 
     <script>
         @if ($errors->any())

@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('home_page_settings', function (Blueprint $table) {
             $table->id();
-            $table->text('loading_title');
-            $table->text('categories_title');
+            $table->string('products_title', 30);
+            $table->string('filter_categories_title', 30);
+            $table->string('categories_title', 20);
             $table->timestamps();
         });
     }

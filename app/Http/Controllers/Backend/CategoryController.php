@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Traits\ImageUploadTrait;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 use Str;
 class CategoryController extends Controller
 {
@@ -13,7 +16,7 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): view
     {
         $categories = Category::all();
         return view('admin.category.index', compact('categories'));
@@ -22,7 +25,7 @@ class CategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create():view
     {
         return view('admin.category.create');
     }
@@ -30,11 +33,11 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required','max:30','unique:categories,name'],
-            'image' => ['nullable','image', 'max:3000'],
+            'name' => ['required','max:100','unique:categories,name'],
+            'image' => ['nullable','image', 'max:4000'],
             'status' => ['required']
         ]);
 
@@ -55,9 +58,17 @@ class CategoryController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): view
     {
         $category = Category::findOrFail($id);
         return view('admin.category.edit',compact('category'));
@@ -66,11 +77,11 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
         $request->validate([
-            'name' => ['max:30'],
-            'image' => ['nullable','image', 'max:3000'],
+            'name' => ['max:100'],
+            'image' => ['nullable','image', 'max:4000'],
             'status' => ['required']
         ]);
 
@@ -93,7 +104,7 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
         $category = Category::findOrFail($id);
         $category->delete();
@@ -104,7 +115,7 @@ class CategoryController extends Controller
 
         return redirect()->route('admin.category.index');
     }
-    public function changeStatus(Request $request)
+    public function changeStatus(Request $request): Response
     {
         $category = Category::findOrFail($request->id);
         $category->status = $request->status == 'true' ? 1 : 0;

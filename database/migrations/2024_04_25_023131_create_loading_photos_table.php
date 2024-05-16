@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('loading_photos', function (Blueprint $table) {
             $table->id();
             $table->text('banner');
-            $table->string('title')->nullable();
+            $table->string('title', 35)->nullable();
             $table->string('button_url')->nullable();
             $table->boolean('status');
             $table->timestamps();

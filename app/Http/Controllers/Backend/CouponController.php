@@ -5,13 +5,15 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
-
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 class CouponController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): view
     {
         $coupons = Coupon::all();
         return view('admin.coupon.index', compact('coupons'));
@@ -20,7 +22,7 @@ class CouponController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): view
     {
         return view('admin.coupon.create');
     }
@@ -28,7 +30,7 @@ class CouponController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'max:200'],
@@ -71,7 +73,7 @@ class CouponController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): view
     {
         $coupon = Coupon::findOrFail($id);
         return view('admin.coupon.edit', compact('coupon'));
@@ -80,7 +82,7 @@ class CouponController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'max:200'],
@@ -115,7 +117,7 @@ class CouponController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
         $coupon = Coupon::findOrFail($id);
         $coupon->delete();
@@ -127,7 +129,7 @@ class CouponController extends Controller
         return redirect()->back();
     }
 
-    public function changeStatus(Request $request)
+    public function changeStatus(Request $request): Response
     {
         $coupon = Coupon::findOrFail($request->id);
         $coupon->status = $request->status == 'true' ? 1 : 0;

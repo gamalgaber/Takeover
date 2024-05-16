@@ -32,10 +32,13 @@
                             {{$order->invoice_id}}
                         </td>
                         <td>
-                            {{$order->user->name}}
+                            @php
+                                $isOrderMadeByAuthanticatedUser = \App\Models\User::where('id', $order->user_id)->first();
+                            @endphp
+                            {{ $isOrderMadeByAuthanticatedUser !== null ? $order->user->name : $order->user_id}}
                         </td>
                         <td>
-                            {{date('d-m-Y', strtotime($order->created_at));}}
+                            {{date('d-m-Y', strtotime($order->created_at))}}
                         </td>
                         <td>
                             {{$order->product_quantity}}

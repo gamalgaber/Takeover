@@ -6,14 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantItem;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+
 
 class ProductVariantController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): view
     {
         $productVariants = ProductVariant::where('product_id', $request->product)->get();
         $product = Product::findOrFail($request->product);
@@ -23,7 +27,7 @@ class ProductVariantController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): view
     {
         return view('admin.product.product-variant.create');
     }
@@ -31,7 +35,7 @@ class ProductVariantController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'product'=> ['integer','required'],
@@ -51,18 +55,7 @@ class ProductVariantController extends Controller
         return redirect()->route('admin.product-variants.index' , ['product'=>$request->product]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(string $id): view
     {
         $variant = ProductVariant::findOrFail($id);
         return view('admin.product.product-variant.edit', compact('variant'));
@@ -71,7 +64,7 @@ class ProductVariantController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
         $request->validate([
             'name'=> ['required','max:200'],
@@ -92,7 +85,7 @@ class ProductVariantController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
         $variant = ProductVariant::findOrFail($id);
 
@@ -112,7 +105,7 @@ class ProductVariantController extends Controller
 
         return redirect()->back();
     }
-    public function changeStatus(Request $request)
+    public function changeStatus(Request $request): Response
     {
         $productVariant = ProductVariant::findOrFail($request->id);
         $productVariant->status = $request->status == 'true' ? 1 : 0;

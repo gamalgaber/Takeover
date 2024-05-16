@@ -8,16 +8,19 @@ use App\Models\HomePageSettings;
 use App\Models\LoadingPhoto;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(): view
     {
         $loadingPhoto = LoadingPhoto::where('status', 1)->first();
-        $products = Product::with('productImageGalleries')->with('variants')->where(['status' => 1, 'is_approved' => 1])->orderBy('id', 'desc')->take(15)->get();
+        $products = Product::with(['productImageGalleries', 'variants'])->where(['status' => 1, 'is_approved' => 1])->orderBy('id', 'desc')->take(15)->get();
         $typeBaseProducts = $this->getTypeBaseProduct();
         $homePageTitles = HomePageSettings::first();
-        $categories = Category::with('product')->orderBy('name', 'ASC')->get();
+        $categories = Category::with(['product' => function ($query) {
+            $query->with('productImageGalleries');
+        }])->orderBy('name', 'ASC')->get();
         return view('frontend.home.home',
         compact(
             'loadingPhoto',
@@ -27,7 +30,7 @@ class HomeController extends Controller
             'categories'
             ));
     }
-    public function getTypeBaseProduct()
+    public function getTypeBaseProduct(): array
     {
         $typeBaseProducts = [];
 

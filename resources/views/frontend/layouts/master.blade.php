@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ asset('Frontend/css/main/wishlist.css') }}">
     <link rel="stylesheet" href="{{ asset('Frontend/css/main/cheakout.css') }}">
     <link rel="stylesheet" href="{{ asset('Frontend/css/main/contact.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="{{asset('Frontend/css/vendors/animate.min.css')}}" />
     <link rel="stylesheet" href="{{ asset('Frontend/css/vendors/all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('Frontend/css/vendors/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('Frontend/css/main/singleProduct.css') }}">
@@ -20,8 +20,8 @@
     <link rel="icon" href="{{ asset('Frontend/assets/images/logo/DONT BE BITCH Y2K - Copy.png') }}">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <link rel="stylesheet" href="{{asset('Frontend/css/vendors/toastr.min.css')}}">
+    <link rel="stylesheet" href="{{asset('Frontend/css/vendors/toastr.css')}}">
 </head>
 
 <body>
@@ -44,13 +44,13 @@
 
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{asset('Frontend/js/vendors/jquery-3.6.0.min.js')}}"></script>
     <script src="{{ asset('Frontend/js/main/singleproduct.js') }}"></script>
     <script src="{{ asset('Frontend/js/main/main.js') }}"></script>
     <script src="{{ asset('Frontend/js/main/cart.js') }}"></script>
     <script src="{{ asset('Frontend/js/vendors/all.min.js') }}"></script>
     <script src="{{ asset('Frontend/js/vendors/bootstrap.bundle.min.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="{{asset('Frontend/js/vendors/toastr.min.js')}}"></script>
     <script>
         @if ($errors->any())
             @foreach ($errors->all() as $error)

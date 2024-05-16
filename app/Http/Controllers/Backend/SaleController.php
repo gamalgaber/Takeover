@@ -6,18 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleItem;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
 
 class SaleController extends Controller
 {
-    public function index()
+    public function index(): view
     {
         $sale = Sale::first();
         $products = Product::where('is_approved', 1)->where('status', 1)->orderBy('id', 'DESC')->get();
         $saleItems = SaleItem::all();
         return view('admin.sale.index', compact('sale', 'products', 'saleItems'));
     }
-    function update(Request $request)
+    function update(Request $request): RedirectResponse
     {
         $request->validate([
             'end_date' => ['required']
@@ -29,7 +32,7 @@ class SaleController extends Controller
         if($request->end_date === $sale->end_date){
 
             toastr('Choose the date first!', 'error', 'Error');
-            
+
             return redirect()->back();
 
         }else{
@@ -40,7 +43,7 @@ class SaleController extends Controller
         }
 
     }
-    function addProduct(Request $request)
+    function addProduct(Request $request): RedirectResponse
     {
         $request->validate([
             'product' => ['required', 'unique:sale_items,product_id'],
@@ -64,7 +67,7 @@ class SaleController extends Controller
 
         return redirect()->back();
     }
-    public function destroy(Request $request)
+    public function destroy(Request $request): Response
     {
         $saleItem = SaleItem::findOrFail($request->id);
         $saleItem->delete();
@@ -75,7 +78,7 @@ class SaleController extends Controller
 
         return redirect()->back();
     }
-    public function changeShowAtHome(Request $request)
+    public function changeShowAtHome(Request $request): Response
     {
         $saleItem = SaleItem::findOrFail($request->id);
         $saleItem->show_at_home = $request->status == 'true' ? 1 : 0;
@@ -83,7 +86,7 @@ class SaleController extends Controller
 
         return response(['message' => 'Show-At-Home has been updated'], 200);
     }
-    public function changeStatus(Request $request)
+    public function changeStatus(Request $request): Response
     {
         $saleItem = SaleItem::findOrFail($request->id);
         $saleItem->status = $request->status == 'true' ? 1 : 0;

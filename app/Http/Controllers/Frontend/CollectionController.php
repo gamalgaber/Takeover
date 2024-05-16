@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class CollectionController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): view
     {
         if($request->has('category')){
             $category = Category::where('slug',$request->category)->first();

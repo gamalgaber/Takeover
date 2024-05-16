@@ -13,19 +13,18 @@ return new class extends Migration
     {
         Schema::create('user_addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id')->nullable();
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('user_id', 150)->nullable();
+            $table->string('first_name', 50);
+            $table->string('last_name', 50);
             $table->string('email');
-            $table->string('phone');
-            $table->string('government');
-            $table->string('city');
-            $table->string('postal_code');
+            $table->string('phone', 20);
+            $table->string('government', 50);
+            $table->string('city', 120);
+            $table->string('postal_code', 50);
             $table->text('address');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */

@@ -4,47 +4,25 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Shipping;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\View\View;
+
 
 class ShippingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): view
     {
         $shippings = Shipping::all();
         return view('admin.shipping.index', compact('shippings'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(string $id): view
     {
         $shipping = Shipping::findOrFail($id);
         return view('admin.shipping.edit', compact('shipping'));
@@ -53,7 +31,7 @@ class ShippingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'max:200'],
@@ -73,7 +51,7 @@ class ShippingController extends Controller
         return redirect()->route('admin.shipping.index');
     }
 
-    public function changeStatus(Request $request)
+    public function changeStatus(Request $request): Response
     {
         $shipping = Shipping::findOrFail($request->id);
         $shipping->status = $request->status == 'true' ? 1 : 0;

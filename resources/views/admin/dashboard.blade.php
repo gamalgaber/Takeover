@@ -55,4 +55,13 @@
         </div>
     </div>
 </div>
+@push('scripts')
+    <script src="{{asset('Backend/assets/icons/all.min.js')}}"></script>
+    <script src="{{asset('Backend/vendors/bootstrap.min.js')}}"></script>
+    <script src="{{asset('Backend/vendors/jquery/jquery-3.7.1.min.js')}}"></script>
+    <script src="{{asset('Backend/assets/js/script.js')}}"></script>
+    <script src="{{asset('Backend/vendors/bootstrap.bundle.min.js')}}"></script>
+@endpush
 @endsection
+
+

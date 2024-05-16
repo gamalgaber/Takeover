@@ -16,7 +16,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-
-public/Backend/*
-public/Frontend/*
-public/login-form/*
+/public/Backend
+/public/Frontend
+/public/login-form

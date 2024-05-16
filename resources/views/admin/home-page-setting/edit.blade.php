@@ -17,6 +17,10 @@
                         <label for="">Categories Title:</label>
                         <input type="name" name="categories_title" id="" value="{{$homePage->categories_title}}">
                     </div>
+                    <div>
+                        <label for="">Categories Title:</label>
+                        <input type="name" name="filter_categories_title" id="" value="{{$homePage->filter_categories_title}}">
+                    </div>
                     <div class="pt-3">
                         <button class="btn my_btn " id="create_btn">Update</button>
                     </div>

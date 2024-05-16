@@ -11,11 +11,13 @@ use App\Traits\ImageUploadTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class AdminController extends Controller
 {
     use ImageUploadTrait;
-    public function dashboard()
+    public function dashboard(): view
     {
         $todaysOrders = Order::whereDate('created_at', Carbon::today())->count();
         $totalOrders = Order::count();
@@ -37,12 +39,12 @@ class AdminController extends Controller
         ));
     }
 
-    public function profile()
-    {
-        return view('admin.profile.index');
-    }
+        public function profile(): view
+        {
+            return view('admin.profile.index');
+        }
 
-    public function updateAdminProfile(Request $request)
+    public function updateAdminProfile(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'max:100'],
@@ -62,7 +64,7 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
-    public function updateAdminPassword(Request $request)
+    public function updateAdminPassword(Request $request): RedirectResponse
     {
         $request->validate([
             'current_password' => ['required', 'current_password'],

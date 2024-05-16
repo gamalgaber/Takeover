@@ -9,11 +9,11 @@
             </li>
             <i class="fa-solid fa-angle-right"></i>
             <li>
-                <a href="javascript:;" class="text-decoration-none text-black-50 ">{{$product->name}}</a>
+                <a href="{{route('collections', ['category'=>$product->category->slug])}}" class="text-decoration-none text-black-50 ">{{ $product->category->name }}</a>
             </li>
             <i class="fa-solid fa-angle-right "></i>
             <li>
-                <a href="{{route('collections', ['category'=>$product->category->slug])}}" class="text-decoration-none text-black-50 ">{{ $product->category->name }}</a>
+                <a href="javascript:;" class="text-decoration-none text-black-50 ">{{$product->name}}</a>
             </li>
         </ul>
         <div class="row">
@@ -52,7 +52,7 @@
                     <hr>
                     <div class="product__info-details my-4 ">
                         <p>SKU : {{ $product->sku }} </p>
-                        <p>Avilability : in stock ({{ $product->quantity }})</p>
+                        <p>Availability : in stock ({{ $product->quantity }})</p>
                         <p>product category : {{ $product->category->name }}</p>
                     </div>
                     <hr>
@@ -66,7 +66,7 @@
                                     <p>Size: <strong class="main--size text-uppercase " id="selected-size"></strong></p>
                                     <div class=" d-flex gap-2 size--text" id="selected_variant">
                                         @foreach ($variant->productVariantItem as $variantItem)
-                                            <span class="size_se {{ $loop->index == 0 ? 'activeeee' : '' }}"
+                                            <span class="size_se "
                                                 data-variant="{{ $variantItem->name }}">{{ $variantItem->name }}</span>
                                         @endforeach
                                     </div>
@@ -94,9 +94,9 @@
                         <button><li class="fa-regular fa-heart icon__single-product-heart "></li></button>
                     </div>
                 </div>
-
                 <form action="{{ route('checkout.buyNow', $product->id) }}" method="GET">
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <input type="hidden" name="variant_id" id="variant_size" value="">
                     <div class="mb-5 animate__animated animate__slower  animate__infinite animate__shakeX">
                         <button href="" class="button__product-buy ">buy it now</button>
                     </div>
@@ -137,12 +137,16 @@
                 }
             });
 
-            let size = $('.size_se').data('variant');
-            $('#selected-size').text(size);
+
+
+            $('#selected-size').text('');
 
             $('.size_se').on('click', function() {
                 var variantName = $(this).data('variant');
+                $('#selected-size').text(variantName);
+
                 $('#variant_name').val(variantName);
+                $('#variant_size').val(variantName);
             });
 
             // add product into cart

@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
                 'email'=>'user@gmail.com',
                 'role'=>'user',
                 'status'=> 'active',
-                'password'=>bcrypt('12345678')
+                'password'=>bcrypt(env('USER_PASSWORD'))
             ],
             [
                 'name'=> 'Admin user',
@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
                 'email'=>'admin@gmail.com',
                 'role'=>'admin',
                 'status'=> 'active',
-                'password'=>bcrypt('12345678')
+                'password'=>bcrypt(env('ADMIN_PASSWORD'))
             ]
         ]);
     }

@@ -23,8 +23,6 @@ trait ImageUploadTrait
     }
     public function updateImage(Request $request, $inputName, $path, $oldPath=null)
     {
-        // $user = Auth::user();
-
         if ($request->hasFile($inputName)) {
             if(File::exists(public_path($oldPath)))//check if file is exists
                 {
@@ -39,7 +37,7 @@ trait ImageUploadTrait
             return $path.'/'.$imageName;
         }
     }
-    public function deleteImage(string $path)
+    public function deleteImage(string $path): void
     {
         if(File::exists(public_path($path)))//check if file is exists
         {
@@ -66,5 +64,4 @@ trait ImageUploadTrait
             return $imagePaths;
         }
     }
-
 }

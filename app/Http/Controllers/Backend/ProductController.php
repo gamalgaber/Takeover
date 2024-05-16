@@ -8,15 +8,19 @@ use App\Models\Product;
 use App\Models\ProductImageGallery;
 use App\Models\ProductVariant;
 use App\Traits\ImageUploadTrait;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Str;
+use Illuminate\View\View;
+
 class ProductController extends Controller
 {
     use ImageUploadTrait;
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): view
     {
         $products = Product::with('category')->get();
         return view('admin.product.index', compact('products'));
@@ -25,7 +29,7 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): view
     {
         $categories = Category::all();
         return view('admin.product.create', compact('categories'));
@@ -34,7 +38,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'image' => ['required', 'image', 'max:3000'],
@@ -84,7 +88,7 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): view
     {
         $product = Product::findOrFail($id);
         $categories = Category::all();
@@ -94,7 +98,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
         $request->validate([
             'image' => ['nullable', 'image', 'max:3000'],
@@ -136,7 +140,7 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
         $product = Product::findOrFail($id);
 
@@ -168,7 +172,7 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.index');
     }
-    public function changeStatus(Request $request)
+    public function changeStatus(Request $request): Response
     {
         $product = Product::findOrFail($request->id);
         $product->status = $request->status == 'true' ? 1 : 0;

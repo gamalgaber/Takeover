@@ -7,12 +7,15 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductVariantItem;
 use Cart;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
+use Illuminate\View\View;
 
 class CartController extends Controller
 {
-    public function cart()
+    public function cart(): view
     {
         $categories = Category::where('status', 1)->get();
         $cartItems = Cart::content();
@@ -23,7 +26,7 @@ class CartController extends Controller
         }
         return view('frontend.pages.cart', compact('cartItems', 'categories'));
     }
-    public function addToCart(Request $request)
+    public function addToCart(Request $request): Response
     {
         $productId = $request->input('product_id');
 
@@ -65,7 +68,7 @@ class CartController extends Controller
         return response(['status' => 'success', 'message' => 'Added successfully!']);
     }
 
-    public function updateProductQuantity(Request $request)
+    public function updateProductQuantity(Request $request): Response
     {
         $productId = Cart::get($request->rowId)->id;
         $product = Product::findOrFail($productId);
@@ -81,11 +84,11 @@ class CartController extends Controller
         // $productTotal = $this->getProductTotal($request->rowId);'product_total' => $productTotal
         return response(['status' => 'success', 'message' => 'product quantity updated']);
     }
-    public function getCartCount()
+    public function getCartCount(): int
     {
         return Cart::content()->count();
     }
-    public function cartTotal()
+    public function cartTotal(): int
     {
         $total = 0;
         foreach (Cart::content() as $product) {
@@ -93,13 +96,13 @@ class CartController extends Controller
         }
         return $total;
     }
-    public function removeProduct($rowId)
+    public function removeProduct($rowId): RedirectResponse
     {
         Cart::remove($rowId);
 
         return redirect()->back();
     }
-    public function clearCart()
+    public function clearCart(): Response
     {
         Cart::destroy();
 

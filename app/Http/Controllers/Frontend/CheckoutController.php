@@ -8,13 +8,17 @@ use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
-use App\Models\Shipping;
+use App\Models\ProductVariant;
+use App\Models\ProductVariantItem;
 use App\Models\Transaction;
 use App\Models\UserAddress;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Cart;
+use Illuminate\View\View;
 
 class CheckoutController extends Controller
 {
@@ -26,21 +30,24 @@ class CheckoutController extends Controller
         }
         $categories = Category::where('status', 1)->get();
         $cartItems = Cart::content();
-        return view('frontend.pages.checkout', compact('cartItems', 'categories'));
+        $subTotal = 0;
+        return view('frontend.pages.checkout', compact('cartItems', 'categories', 'subTotal'));
     }
 
-    public function buyNow(string $id)
+    public function buyNow(string $id): view
     {
         $categories = Category::where('status', 1)->get();
         $cartItems = Cart::content();
 
         $product = Product::where('id', $id)->first();
-        return view('frontend.pages.checkout', compact('product', 'categories', 'cartItems'));
+
+        $subTotal = $product->price;
+        return view('frontend.pages.checkout', compact('product', 'categories', 'cartItems', 'subTotal'));
     }
 
 
 
-    public function applyCoupon(Request $request)
+    public function applyCoupon(Request $request): Response
     {
         if ($request->coupon_code == null) {
             return response(['status' => 'error', 'message' => 'coupon field is required']);
@@ -78,7 +85,7 @@ class CheckoutController extends Controller
     }
     public function couponCalculation()
     {
-        $total =0;
+        $total = 0;
         if (Session::has('coupon')) {
             $coupon = Session::get('coupon');
             $subTotal = getCartSubTotal();
@@ -98,7 +105,7 @@ class CheckoutController extends Controller
             return response(['status' => 'success', 'cart_total' => $total, 'discount' => '0']);
         }
     }
-    public function checkoutFormSubmit(Request $request)
+    public function checkoutFormSubmit(Request $request): RedirectResponse
     {
         $request->validate([
             'first_name' => ['required', 'max:50'],
@@ -112,19 +119,27 @@ class CheckoutController extends Controller
             'shipping_price' => ['required']
         ]);
 
-        $cartItems = Cart::content();
+        $checkoutType = $request->input('checkout_type');
 
-        $cartTotal = 0;
-        foreach($cartItems as $item){
-           $cartTotal +=  $item->price;
+        if($checkoutType == 'buyNow'){
+            $productId = $request->input('product_id');
+            $product = Product::find($productId);
+            $total = $product->price;
+//            dd($request->all());
+
+            $totalAmount = $total + $request->shipping_price ;
+        }else {
+            $cartItems = Cart::content();
+
+            $cartTotal = 0;
+            foreach($cartItems as $item){
+                $cartTotal +=  $item->price;
+            }
+            $totalAmount = $cartTotal + $request->shipping_price ;
         }
 
-        $totalAmount = $cartTotal + $request->shipping_price ;
-
         $address = new UserAddress();
-        dd($request->all());
-        // id is null
-        $address->user_id = Auth::user()->id ? Auth::user()->id : $request->first_name. ' - ' .$request->phone;
+        $address->user_id = Auth::user() ? Auth::user()->id : $request->first_name . " " . $request->last_name;
         $address->first_name = $request->first_name;
         $address->last_name = $request->last_name;
         $address->email = $request->email;
@@ -150,16 +165,16 @@ class CheckoutController extends Controller
 
 
         $transactionId = uniqid();
-        $this->storeOrder('cash-on-delivery', 1 , $transactionId , $totalAmount, $userAddress, $request->shipping_price);
-        session()->forget('cart');
+        $this->storeOrder('cash-on-delivery', 1 , $transactionId , $totalAmount, $userAddress, $request->shipping_price, $request);
+        if ($checkoutType == 'cart') {
+            session()->forget('cart');
+        }
         return redirect()->route('home');
     }
-    public function calculateShippingCost(Request $request)
+    public function calculateShippingCost(Request $request): Response
     {
         $government = $request->input('government');
 
-        // Your getShippingCost logic here
-        // You can use the logic you provided earlier
         if (in_array($government, ['Aswan', 'Asyut', 'Luxor', 'Minya', 'Matruh', 'New Valley', 'North Sinai', 'South Sinai', 'Red Sea', 'Qena', 'Sohag'])) {
             $cost = 100;
         } elseif (in_array($government, ['Alexandria', 'Beheira', 'Beni Suef', 'Dakahlia', 'Damietta', 'Faiyum', 'Gharbia', 'Ismailia', 'Kafr El Sheikh', 'Monufia', 'Qalyubia', 'Sharqia', 'Suez'])) {
@@ -172,13 +187,18 @@ class CheckoutController extends Controller
         return response(['status'=>'success','cost' => $cost]);
     }
 
-    private function storeOrder($paymentMethod, $paymentStatus, $transactionId, $total, $orderAddress, $shippingPrice)
+    private function storeOrder($paymentMethod, $paymentStatus, $transactionId, $total, $orderAddress, $shippingPrice, Request $request): void
     {
+        $checkoutType = $request->input('checkout_type');
         $order = new Order();
         $order->invoice_id = rand(1, 999999) . "_" . rand(1, 8000);
-        $order->user_id = Auth::user()->id ? Auth::user()->id : '';
+        $order->user_id = Auth::user()? Auth::user()->id : $request->first_name . " " . $request->last_name;
         $order->total = $total;
+        if($checkoutType == 'cart'){
         $order->product_quantity = \Cart::content()->count();
+        }else {
+        $order->product_quantity = 1;
+        }
         $order->payment_method = $paymentMethod;
         $order->payment_status = $paymentStatus;
         $order->order_address = $orderAddress;
@@ -187,24 +207,42 @@ class CheckoutController extends Controller
         $order->order_status = 'pending';
         $order->save();
 
-        /** Store Order Products */
-        foreach (\Cart::content() as $item) {
-            $product = Product::find($item->id);
+        /** Store Order Products Cart*/
+        if($checkoutType == 'cart') {
+            foreach (\Cart::content() as $item) {
+                $product = Product::find($item->id);
+                $orderProduct = new OrderProduct();
+                $orderProduct->order_id = $order->id;
+                $orderProduct->product_id = $product->id;
+                $orderProduct->product_name = $product->name;
+                $orderProduct->variants = json_encode($item->options->variants);
+                $orderProduct->unit_price = $item->price;
+                $orderProduct->quantity = $item->qty;
+                $orderProduct->save();
+
+                // update product quantity
+                $updatedQty = ($product->quantity - $item->qty);
+                $product->quantity = $updatedQty;
+                $product->save();
+            }
+        }else {
+            $productId = $request->input('product_id');
+            $product = Product::find($productId);
             $orderProduct = new OrderProduct();
             $orderProduct->order_id = $order->id;
             $orderProduct->product_id = $product->id;
             $orderProduct->product_name = $product->name;
-            $orderProduct->variants = json_encode($item->options->variants);
-            $orderProduct->unit_price = $item->price;
-            $orderProduct->quantity = $item->qty;
+            $variantId = $request->input('variant_id');
+            $orderProduct->variants = $variantId;
+            $orderProduct->unit_price = $product->price;
+            $orderProduct->quantity = 1;
             $orderProduct->save();
 
             // update product quantity
-            $updatedQty = ($product->quantity - $item->qty);
+            $updatedQty = ($product->quantity - 1);
             $product->quantity = $updatedQty;
             $product->save();
         }
-
         // store transaction details
         $transaction = new Transaction();
         $transaction->order_id = $order->id;
@@ -213,6 +251,4 @@ class CheckoutController extends Controller
         $transaction->amount = $total;
         $transaction->save();
     }
-
-
 }

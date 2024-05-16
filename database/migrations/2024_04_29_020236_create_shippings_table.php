@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('shippings', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('cost');
-            $table->string('status');
+            $table->string('name', 50);
+            $table->integer('cost');
+            $table->boolean('status');
             $table->timestamps();
         });
     }
